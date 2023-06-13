@@ -13,18 +13,13 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+app.get("/urls/:id", (req, res) => {
+  const shortURLId = req.params.id;
+  const longURL = urlDatabase[shortURLId];
+  const templateVars = { shortURLId, longURL };
+  res.render("urls_show", templateVars);
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
-});
-
-app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
-});
-
-app.get("/hello", (req, res) => {
-  res.send("<html><body>Hello <b>World</b></body></html>\n");
-});
-app.get("/urls", (req, res) => {
-  const templateVars = { urls: urlDatabase };
-  res.render("urls_index", templateVars);
 });
