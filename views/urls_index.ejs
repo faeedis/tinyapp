@@ -8,17 +8,19 @@
     </tr>
   </thead>
   <tbody>
-    <% for (let shortURL in urls) { %>
-      <tr>
-        <td><a href="/urls/<%= shortURL %>"><%= shortURL %></a></td>
-        <td><%= urls[shortURL] %></td>
-        <td><a href="/urls/<%= shortURL %>">Edit</a></td>
-        <td>
-          <form method="POST" action="/urls/<%= shortURL %>/delete">
-            <button type="submit">Delete</button>
-          </form>
-        </td>
-      </tr>
+    <% if (Array.isArray(urls)) { %>
+      <% urls.forEach(url => { %>
+        <tr>
+          <td><a href="/urls/<%= url.shortURL %>"><%= url.shortURL %></a></td>
+          <td><%= url.longURL %></td>
+          <td><a href="/urls/<%= url.shortURL %>">Edit</a></td>
+          <td>
+            <form method="POST" action="/urls/<%= url.shortURL %>/delete">
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
     <% } %>
   </tbody>
 </table>
