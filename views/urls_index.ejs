@@ -1,25 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>TinyApp - My URLs</title>
-  </head>
-  <body>
-    <main style="margin: 1em;">
-      <h1>My URLs</h1>
-      <table>
-        <tr>
-          <th>Short URL ID</th>
-          <th>Long URL</th>
-        </tr>
-        <% for (const url in urls) { %>
-          <tr>
-            <td><%= url %></td>
-            <td><%= urls[url] %></td>
-          </tr>
-        <% } %>
-      </table>
-    </main>
-  </body>
-</html>
+<!-- urls_index.ejs -->
+
+<h1>My URLs</h1>
+
+<ul>
+  <% for (let shortURL in urls) { %>
+    <li>
+      <div><%= shortURL %></div>
+      <div>
+        <a href="<%= urls[shortURL] %>"><%= urls[shortURL] %></a>
+        <form method="POST" action="/urls/<%= shortURL %>/delete">
+          <button type="submit">Delete</button>
+        </form>
+      </div>
+    </li>
+  <% } %>
+</ul>
