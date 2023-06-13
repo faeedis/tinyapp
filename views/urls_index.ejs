@@ -1,17 +1,24 @@
-<!-- urls_index.ejs -->
-
-<h1>My URLs</h1>
-
-<ul>
-  <% for (let shortURL in urls) { %>
-    <li>
-      <div><%= shortURL %></div>
-      <div>
-        <a href="<%= urls[shortURL] %>"><%= urls[shortURL] %></a>
-        <form method="POST" action="/urls/<%= shortURL %>/delete">
-          <button type="submit">Delete</button>
-        </form>
-      </div>
-    </li>
-  <% } %>
-</ul>
+<table>
+  <thead>
+    <tr>
+      <th>Short URL</th>
+      <th>Long URL</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for (let shortURL in urls) { %>
+      <tr>
+        <td><a href="/urls/<%= shortURL %>"><%= shortURL %></a></td>
+        <td><%= urls[shortURL] %></td>
+        <td><a href="/urls/<%= shortURL %>">Edit</a></td>
+        <td>
+          <form method="POST" action="/urls/<%= shortURL %>/delete">
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

@@ -1,60 +1,63 @@
+const express = require('express');
+const cookieParser = require('cookie-parser');
 
-const express = require("express");
 const app = express();
-const PORT = 8080;
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.set("view engine", "ejs");
+app.set('view engine', 'ejs');
 
 const urlDatabase = {
-  b2xVn2: "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
+  // Your URL data here
 };
 
-app.get("/", (req, res) => {
-  res.send("Hello!");
+app.get('/', (req, res) => {
+  res.redirect('/urls');
 });
 
-app.get("/urls", (req, res) => {
-  const templateVars = { urls: urlDatabase };
-  res.render("urls_index", templateVars);
+app.get('/urls', (req, res) => {
+  const templateVars = {
+    urls: urlDatabase,
+    username: req.cookies.username
+  };
+  res.render('urls_index', templateVars);
 });
 
-app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+app.get('/urls/new', (req, res) => {
+  const templateVars = {
+    username: req.cookies.username
+  };
+  res.render('urls_new', templateVars);
 });
 
-app.get("/urls/:id", (req, res) => {
-  const shortURL = req.params.id;
-  const longURL = urlDatabase[shortURL];
-  const templateVars = { id: shortURL, longURL };
-  res.render("urls_show", templateVars);
+app.post('/urls', (req, res) => {
+  // Handle creating new URL
 });
 
-app.post("/urls", (req, res) => {
-  const longURL = req.body.longURL;
-  const shortURL = generateRandomString();
-  urlDatabase[shortURL] = longURL;
-  res.redirect(`/urls/${shortURL}`);
+app.post('/urls/:id', (req, res) => {
+  // Handle updating URL
 });
 
-app.post("/urls/:id/delete", (req, res) => {
-  const shortURL = req.params.id;
-  delete urlDatabase[shortURL];
-  res.redirect("/urls");
+app.post('/urls/:id/delete', (req, res) => {
+  // Handle deleting URL
 });
 
-function generateRandomString() {
-  let randomString = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < 6; i++) {
-    randomString += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return randomString;
-}
+app.get('/urls/:id', (req, res) => {
+  const templateVars = {
+    id: req.params.id,
+    longURL: urlDatabase[req.params.id],
+    username: req.cookies.username
+  };
+  res.render('urls_show', templateVars);
+});
 
+app.post('/login', (req, res) => {
+  const { username } = req.body;
+  res.cookie('username', username);
+  res.redirect('/urls');
+});
+
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
