@@ -1,5 +1,10 @@
 <main style="margin: 1em;">
   <h3>URL Details</h3>
-  <p>Short URL ID: <%= id %></p>
+  <p>Short URL ID: <%= shortURL %></p>
   <p>Long URL: <%= longURL %></p>
+  
+  <form method="POST" action="/urls/<%= shortURL %>">
+    <input type="text" name="longURL" value="<%= longURL %>">
+    <button type="submit">Update</button>
+  </form>
 </main>
